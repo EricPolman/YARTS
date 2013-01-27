@@ -4,15 +4,14 @@
 
 GameObject *gameObject;
 
-Game::Game(void)
-{
+Game::Game(void){
 }
 
-Game::~Game(void)
-{
+Game::~Game(void){
 }
 
 void Game::load(){
+	m_scene = new Scene();
 	TextureManager::getInstance()->loadTexture("Data/Images/sheet1.png", "sfmlgame");
 	gameObject = new GameObject();
 	gameObject->load("sfmlgame", true, 128, 128, 4, 4);
@@ -20,9 +19,9 @@ void Game::load(){
 }
 
 void Game::update(float fDeltaTime){
-	gameObject->update(fDeltaTime);
+	m_scene->update(fDeltaTime);
 }
 
 void Game::draw(sf::RenderWindow& window){
-	gameObject->draw(window);
+	m_scene->draw(window);
 }

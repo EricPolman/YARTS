@@ -9,7 +9,6 @@ int main()
 	Game game;
 	float elapsedTime = 0;
 
-
 	game.load();
 	while (Window.isOpen()) {	
 		sf::Event event;

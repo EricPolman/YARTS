@@ -1,4 +1,6 @@
 #pragma once
+#include "Scene.h"
+
 class Game
 {
 public:
@@ -7,5 +9,7 @@ public:
 	void load();
 	void update(const float fDeltaTime);
 	void draw(sf::RenderWindow& window);
+
+	Scene *m_scene;
 };
 
