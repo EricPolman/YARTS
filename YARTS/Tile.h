@@ -4,7 +4,7 @@
 class Tile
 {
 public:
-	enum GroundType {GRASS, STONE, DIRT};
+	enum GroundType {GRASS, STONE, DIRT, ICE};
 	Tile(GroundType type);
 	~Tile(void);
 
