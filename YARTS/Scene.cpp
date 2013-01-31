@@ -1,16 +1,23 @@
 #include "Scene.h"
 
-GameObject *gameObject;
-
 Scene::Scene(void){
+	m_rootNode = new SceneNode(NULL);
+
 	m_terrain = new Terrain();
 	m_bIsFocused = false;
 	m_cameraMan.m_position.x = MAX_MAP_WIDTH * TILE_SIZE * 0.5f - TILE_SIZE;
 	m_cameraMan.m_position.y = MAX_MAP_HEIGHT * TILE_SIZE * 0.5f - TILE_SIZE;
 
 	TextureManager::getInstance()->loadTexture("Data/Images/sheet1.png", "sfmlgame");
-	gameObject = new GameObject();
+	GameObject *gameObject = new GameObject(m_rootNode);
 	gameObject->load("sfmlgame", true, 128, 128, 4, 4);
+	gameObject->SceneNode::move(100,100);
+	GameObjectManager::getInstance()->m_gameObjects.push_back(gameObject);
+
+	GameObject *gameObject2 = new GameObject(m_rootNode);
+	gameObject2->load("sfmlgame", true, 128, 128, 4, 4);
+	GameObjectManager::getInstance()->m_gameObjects.push_back(gameObject2);
+
 }
 
 Scene::~Scene(void){
@@ -19,15 +26,18 @@ Scene::~Scene(void){
 
 void Scene::update(float fDeltaTime){
 	m_terrain->update(fDeltaTime);
-	gameObject->update(fDeltaTime);
+	GameObjectManager::getInstance()->update(fDeltaTime);
+
+	m_rootNode->m_relativePosition.x += fDeltaTime * 50;
 
 	if(!m_bIsFocused){
 		m_cameraMan.update(fDeltaTime);
 		
 		m_terrain->move(-m_cameraMan.m_position.x, -m_cameraMan.m_position.y);
-		gameObject->move(-m_cameraMan.m_position.x, -m_cameraMan.m_position.y);
-		gameObject->m_targetPosition.x += -m_cameraMan.m_position.x;
-		gameObject->m_targetPosition.y += -m_cameraMan.m_position.y;
+		m_rootNode->move(-m_cameraMan.m_position.x, -m_cameraMan.m_position.y);
+		//gameObject->m_targetPosition.x += -m_cameraMan.m_position.x;
+		//gameObject->m_targetPosition.y += -m_cameraMan.m_position.y;
+		GameObjectManager::getInstance()->moveTargets(-m_cameraMan.m_position.x, -m_cameraMan.m_position.y);
 
 		m_cameraMan.m_position.x = m_cameraMan.m_position.y = 0;	
 	}
@@ -36,7 +46,7 @@ void Scene::update(float fDeltaTime){
 
 void Scene::draw(sf::RenderWindow& window){
 	m_terrain->draw(window);
-	gameObject->draw(window);
+	GameObjectManager::getInstance()->draw(window);
 }
 
 void Scene::clampCamera(){
@@ -59,4 +69,9 @@ void Scene::clampCamera(){
 	}
 
 	m_terrain->move(dx, dy);
+	m_rootNode->move(dx, dy);
+	GameObjectManager::getInstance()->moveTargets(dx, dy);
+	//gameObject->SceneNode::move(dx, dy);
+	//gameObject->m_targetPosition.x += dx;
+	//gameObject->m_targetPosition.y += dy;
 }

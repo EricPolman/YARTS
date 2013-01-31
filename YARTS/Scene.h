@@ -1,8 +1,9 @@
 #pragma once
 #include "StdAfx.h"
-#include "GameObject.h"
 #include "Terrain.h"
 #include "CameraMan.h"
+#include "SceneNode.h"
+#include "GameObjectManager.h"
 
 class Scene
 {
@@ -20,5 +21,8 @@ public:
 
 	Terrain *m_terrain;
 	CameraMan m_cameraMan;
+	SceneNode *m_rootNode;
+	SceneNode *m_childNode;
+
 };
 

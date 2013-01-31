@@ -10,3 +10,4 @@
 #define MAX_MAP_HEIGHT 16
 #define CAMERA_SPEED 300
 #define GROUND_TYPES 4
+

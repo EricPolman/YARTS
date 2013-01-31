@@ -1,6 +1,5 @@
 #include "StdAfx.h"
 #include "Game.h"
-#include "GameObject.h"
 
 Game::Game(void){
 }

@@ -15,5 +15,4 @@
 #include "SFML\Graphics.hpp"
 #include <Windows.h>
 #include "TextureManager.h"
-
 // TODO: reference additional headers your program requires here

@@ -34,3 +34,4 @@ public:
 	Vector2 operator-(const Vector2 &other);
 private:
 };
+

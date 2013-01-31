@@ -1,13 +1,15 @@
 #pragma once
 #include "AnimatedSprite.h"
+#include "SceneNode.h"
 
 class GameObject :
+	public SceneNode,
 	public AnimatedSprite
 {
 public:
-	GameObject(void);
 	virtual ~GameObject(void);
-
+	GameObject(const SceneNode*parent);
+	
 	virtual void update(const float fDeltaTime);
 	virtual void draw(sf::RenderWindow&);
 
@@ -16,4 +18,9 @@ public:
 
 	void normalizeVector(sf::Vector2f &vector);
 	float getDistance(sf::Vector2f other);
+	void setDirection();
+	void GameObject::moveTarget(float dx, float dy);
+	enum State{IDLE, WALKING};
+	State m_state;
 };
+
