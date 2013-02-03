@@ -8,6 +8,8 @@ int main()
 	sf::Clock deltaClock;
 	Game game;
 	float elapsedTime = 0;
+	bool bHasFocus = true;
+
 
 	game.load();
 	while (Window.isOpen()) {	
@@ -16,16 +18,25 @@ int main()
             if (event.type == sf::Event::Closed) {
                 Window.close();
 			}
-        }
 
+			if(event.type == sf::Event::LostFocus){
+				bHasFocus = false;
+			}
+			if(event.type == sf::Event::GainedFocus){
+				bHasFocus = true;
+			}
+        }
 		sf::Time dt = deltaClock.restart();
 		float fDeltaTime = dt.asSeconds();
-		elapsedTime += fDeltaTime;
-
-		Window.clear(sf::Color::Black);
-		game.update(fDeltaTime);
-		game.draw(Window);
-		Window.display();
+			
+		if(bHasFocus){
+			elapsedTime += fDeltaTime;
+			Window.clear(sf::Color::Black);
+			Input::update(fDeltaTime, Window);
+			game.update(fDeltaTime);
+			game.draw(Window);
+			Window.display();
+		}
     }
     return 0;
 }

@@ -8,7 +8,8 @@ public:
 	~Game();
 	void load();
 	void update(const float fDeltaTime);
-	void draw(sf::RenderWindow& window);
+	void updateMouse(sf::RenderWindow &window);
+	void draw(sf::RenderWindow &window);
 
 	Scene *m_scene;
 };

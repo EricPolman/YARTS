@@ -28,20 +28,32 @@ void Scene::update(float fDeltaTime){
 	m_terrain->update(fDeltaTime);
 	GameObjectManager::getInstance()->update(fDeltaTime);
 
-	m_rootNode->m_relativePosition.x += fDeltaTime * 50;
-
 	if(!m_bIsFocused){
 		m_cameraMan.update(fDeltaTime);
 		
 		m_terrain->move(-m_cameraMan.m_position.x, -m_cameraMan.m_position.y);
 		m_rootNode->move(-m_cameraMan.m_position.x, -m_cameraMan.m_position.y);
-		//gameObject->m_targetPosition.x += -m_cameraMan.m_position.x;
-		//gameObject->m_targetPosition.y += -m_cameraMan.m_position.y;
 		GameObjectManager::getInstance()->moveTargets(-m_cameraMan.m_position.x, -m_cameraMan.m_position.y);
 
 		m_cameraMan.m_position.x = m_cameraMan.m_position.y = 0;	
 	}
 	clampCamera();
+
+	if(Input::getButtonDown(sf::Mouse::Left)){
+		for(int i = 0; i < GameObjectManager::getInstance()->m_gameObjects.size(); i++){
+			GameObject &go = *GameObjectManager::getInstance()->m_gameObjects[i];
+			if(Input::g_mousePosition.x > go.getPosition().x - go.getOrigin().x &&
+			   Input::g_mousePosition.x < go.getPosition().x + go.getOrigin().x &&
+			   Input::g_mousePosition.y > go.getPosition().y - go.getOrigin().y &&
+			   Input::g_mousePosition.y < go.getPosition().y + go.getOrigin().y)
+			{				
+				GameObjectManager::getInstance()->m_gameObjects[i]->toggleSelection();
+			}
+			else if(GameObjectManager::getInstance()->m_gameObjects[i]->m_bIsSelected){
+				GameObjectManager::getInstance()->m_gameObjects[i]->toggleSelection();	
+			}
+		}
+	}
 }
 
 void Scene::draw(sf::RenderWindow& window){
@@ -71,7 +83,4 @@ void Scene::clampCamera(){
 	m_terrain->move(dx, dy);
 	m_rootNode->move(dx, dy);
 	GameObjectManager::getInstance()->moveTargets(dx, dy);
-	//gameObject->SceneNode::move(dx, dy);
-	//gameObject->m_targetPosition.x += dx;
-	//gameObject->m_targetPosition.y += dy;
 }

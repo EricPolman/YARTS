@@ -1,10 +1,9 @@
 #include "GameObject.h"
 
-sf::Vector2i mousePosition;
-
 GameObject::GameObject(const SceneNode *parent) : SceneNode(parent)
 {
 	m_state = IDLE;
+	m_bIsSelected = false;
 }
 
 GameObject::~GameObject(void)
@@ -13,11 +12,12 @@ GameObject::~GameObject(void)
 
 void GameObject::update(float fDeltaTime)
 {
-	if(sf::Mouse::isButtonPressed(sf::Mouse::Right)){
-		m_targetPosition = sf::Vector2f(mousePosition.x, mousePosition.y);
-		m_state = WALKING;
+	if(m_bIsSelected){
+		if(Input::getButtonUp(sf::Mouse::Right)){
+			m_targetPosition = sf::Vector2f(Input::g_mousePosition.x, Input::g_mousePosition.y);
+			m_state = WALKING;
+		}
 	}
-	
 	if(m_state == WALKING){
 		setDirection();
 		if(getDistance(m_targetPosition) > 10){
@@ -35,7 +35,6 @@ void GameObject::update(float fDeltaTime)
 void GameObject::draw(sf::RenderWindow& window)
 {
 	AnimatedSprite::draw(window);
-	mousePosition = sf::Mouse::getPosition(window);
 }
 
 void GameObject::normalizeVector(sf::Vector2f &vector)
@@ -68,4 +67,14 @@ void GameObject::setDirection(){
 void GameObject::moveTarget(float dx, float dy){
 	m_targetPosition.x += dx;
 	m_targetPosition.y += dy;
+}
+
+void GameObject::toggleSelection(){
+	if(!m_bIsSelected){
+		m_bIsSelected = true;
+		setColor(sf::Color::Green);
+	}else{
+		m_bIsSelected = false;
+		setColor(sf::Color::White);
+	}
 }

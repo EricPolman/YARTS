@@ -19,8 +19,11 @@ public:
 	void normalizeVector(sf::Vector2f &vector);
 	float getDistance(sf::Vector2f other);
 	void setDirection();
-	void GameObject::moveTarget(float dx, float dy);
+	void moveTarget(float dx, float dy);
 	enum State{IDLE, WALKING};
 	State m_state;
+
+	bool m_bIsSelected;
+	void toggleSelection();
 };
 

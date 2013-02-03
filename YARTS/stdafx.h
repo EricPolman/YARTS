@@ -6,13 +6,13 @@
 #pragma once
 
 #include "targetver.h"
+#include "Input.h"
 #include <stdio.h>
 #include <iostream>
 #include <tchar.h>
 #include <random>
 #include "Vector2.h"
 #include "SFML/Audio.hpp"
-#include "SFML\Graphics.hpp"
 #include <Windows.h>
 #include "TextureManager.h"
 // TODO: reference additional headers your program requires here
